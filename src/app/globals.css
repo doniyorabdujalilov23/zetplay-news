@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-line dark:border-line-dark;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-paper text-ink antialiased dark:bg-surface-dark dark:text-paper;
+  }
+  ::selection {
+    @apply bg-accent/20 text-ink dark:text-paper;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs font-semibold uppercase tracking-widest text-accent;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden bg-line/60 dark:bg-line-dark/60;
+  }
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0 -translate-x-full animate-shimmer;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  }
+  .dark .skeleton::after {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  }
+
+  .prose-article {
+    @apply prose prose-neutral max-w-none dark:prose-invert prose-headings:font-display prose-a:text-accent prose-img:rounded-lg;
+  }
+}
+
+/* Rich text editor content parity with prose-article on the frontend */
+.tiptap-editor .ProseMirror {
+  @apply min-h-[320px] px-4 py-3 outline-none;
+}
+.tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply pointer-events-none float-left h-0 text-muted;
+}
