@@ -1,0 +1,83 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function role() {
+      return request.auth.token.role;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && role() == 'admin';
+    }
+
+    function isEditor() {
+      return isSignedIn() && (role() == 'admin' || role() == 'editor');
+    }
+
+    function isModerator() {
+      return isSignedIn() && (role() == 'admin' || role() == 'moderator');
+    }
+
+    function isStaff() {
+      return isSignedIn() && role() in ['admin', 'editor', 'moderator'];
+    }
+
+    // --- news (articles) ---
+    match /news/{articleId} {
+      allow read: if resource.data.status == 'published' || isStaff();
+      allow create, update: if isEditor();
+      allow delete: if isEditor();
+    }
+
+    // --- categories ---
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isEditor();
+    }
+
+    // --- tags ---
+    match /tags/{tagId} {
+      allow read: if true;
+      allow write: if isEditor();
+    }
+
+    // --- comments ---
+    match /comments/{commentId} {
+      allow read: if resource.data.status == 'approved' || isModerator();
+      allow create: if request.resource.data.status == 'pending'
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() < 80
+                    && request.resource.data.content is string
+                    && request.resource.data.content.size() > 0
+                    && request.resource.data.content.size() < 2000;
+      // Public "like" increments only touch the likes field
+      allow update: if isModerator() ||
+                    (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes']));
+      allow delete: if isModerator();
+    }
+
+    // --- users (admin/editor/moderator accounts) ---
+    match /users/{userId} {
+      allow read: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+      allow write: if isAdmin();
+    }
+
+    // --- settings (singleton site config) ---
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- media index (mirrors Storage uploads for search/listing) ---
+    match /media/{mediaId} {
+      allow read: if isStaff();
+      allow write: if isEditor();
+    }
+  }
+}

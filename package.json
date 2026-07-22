@@ -1,0 +1,62 @@
+{
+  "name": "zetplay-news",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ZetPlay News — zamonaviy, tezkor va xavfsiz yangiliklar platformasi",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "create-admin": "tsx scripts/create-admin.ts",
+    "seed": "tsx scripts/seed-categories.ts"
+  },
+  "dependencies": {
+    "next": "15.5.21",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "firebase": "11.1.0",
+    "firebase-admin": "13.0.2",
+    "@tiptap/react": "2.10.4",
+    "@tiptap/starter-kit": "2.10.4",
+    "@tiptap/extension-image": "2.10.4",
+    "@tiptap/extension-link": "2.10.4",
+    "@tiptap/extension-youtube": "2.10.4",
+    "@tiptap/extension-placeholder": "2.10.4",
+    "@tiptap/extension-underline": "2.10.4",
+    "@tiptap/extension-text-align": "2.10.4",
+    "framer-motion": "11.15.0",
+    "lucide-react": "0.469.0",
+    "date-fns": "4.1.0",
+    "clsx": "2.1.1",
+    "tailwind-merge": "2.6.0",
+    "nanoid": "5.0.9",
+    "react-hot-toast": "2.4.1",
+    "sharp": "0.33.5",
+    "js-cookie": "3.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "@types/js-cookie": "3.0.6",
+    "typescript": "5.7.2",
+    "tailwindcss": "3.4.17",
+    "postcss": "8.4.49",
+    "autoprefixer": "10.4.20",
+    "@tailwindcss/typography": "0.5.15",
+    "eslint": "9.17.0",
+    "eslint-config-next": "15.5.21",
+    "prettier": "3.4.2",
+    "prettier-plugin-tailwindcss": "0.6.9",
+    "tsx": "4.19.2",
+    "dotenv": "16.4.7"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
